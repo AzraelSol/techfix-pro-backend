@@ -1,0 +1,204 @@
+/* TechFixPro Email Theme */
+/* Dark theme with blue/purple accent colors */
+
+/* Base Variables */
+:root {
+    --primary-500: #3b82f6;
+    --primary-600: #2563eb;
+    --primary-700: #1d4ed8;
+    --neon-purple: #8a2be2;
+    --dark-bg: #1a1a1a;
+    --dark-card: #2a2a2a;
+    --dark-border: #3a3a3a;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --text-muted: #6a6a6a;
+}
+
+/* Body */
+body {
+    background-color: #0f0f0f !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Wrapper */
+.wrapper {
+    background-color: #0f0f0f !important;
+}
+
+/* Body Content */
+.body {
+    background-color: #0f0f0f !important;
+    border-bottom: none;
+    border-top: none;
+}
+
+/* Inner Body */
+.inner-body {
+    background-color: #1a1a1a !important;
+    border-color: #3a3a3a !important;
+    border-radius: 16px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+    margin: 20px auto !important;
+}
+
+/* Content Cell */
+.content-cell {
+    padding: 45px !important;
+}
+
+/* Header */
+.header {
+    padding: 30px 0 !important;
+}
+
+.header a {
+    color: #ffffff !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+/* Typography */
+h1 {
+    color: #ffffff !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-top: 0;
+    text-align: left;
+}
+
+p {
+    color: #d0d0d0 !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 0 16px;
+}
+
+/* Button */
+.button {
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.4) !important;
+}
+
+.button-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #8a2be2 100%) !important;
+    border: none !important;
+}
+
+.button-primary:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
+}
+
+/* Panel */
+.panel {
+    background-color: #2a2a2a !important;
+    border-left-color: #3b82f6 !important;
+    border-radius: 8px !important;
+    margin: 20px 0 !important;
+}
+
+.panel-content {
+    color: #a0a0a0 !important;
+}
+
+.panel-item {
+    padding: 0;
+}
+
+/* Table */
+table {
+    width: 100%;
+}
+
+.table th {
+    border-bottom: 2px solid #3a3a3a !important;
+    color: #ffffff !important;
+    padding: 12px !important;
+}
+
+.table td {
+    color: #d0d0d0 !important;
+    padding: 12px !important;
+    border-bottom: 1px solid #2a2a2a !important;
+}
+
+/* Subcopy */
+.subcopy {
+    border-top: 1px solid #3a3a3a !important;
+    margin-top: 30px !important;
+    padding-top: 20px !important;
+}
+
+.subcopy p {
+    color: #6a6a6a !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+}
+
+/* Footer */
+.footer {
+    background-color: transparent !important;
+    padding: 25px 0 !important;
+}
+
+.footer p {
+    color: #6a6a6a !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    margin: 4px 0 !important;
+}
+
+.footer a {
+    color: #3b82f6 !important;
+    text-decoration: none !important;
+}
+
+/* Links */
+a {
+    color: #3b82f6 !important;
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #60a5fa !important;
+}
+
+/* Greeting */
+.greeting {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+/* Signature/Salutation */
+.salutation {
+    color: #a0a0a0 !important;
+    margin-top: 30px !important;
+}
+
+/* Code blocks for tokens/codes */
+code {
+    background-color: #2a2a2a !important;
+    border: 1px solid #3a3a3a !important;
+    border-radius: 6px !important;
+    color: #3b82f6 !important;
+    font-family: 'Monaco', 'Consolas', monospace !important;
+    font-size: 14px !important;
+    padding: 4px 10px !important;
+}
+
+/* Responsive */
+@media only screen and (max-width: 600px) {
+    .inner-body {
+        width: 100% !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .content-cell {
+        padding: 30px 25px !important;
+    }
+}
+
