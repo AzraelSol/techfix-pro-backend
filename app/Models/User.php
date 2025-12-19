@@ -98,9 +98,25 @@ class User extends Authenticatable implements MustVerifyEmailContract
     }
 
     /**
-     * Check if user is admin.
+     * Check if user is superadmin.
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->user_type === 'superadmin';
+    }
+
+    /**
+     * Check if user is admin (includes superadmin).
      */
     public function isAdmin(): bool
+    {
+        return in_array($this->user_type, ['admin', 'superadmin']);
+    }
+
+    /**
+     * Check if user is regular admin only (not superadmin).
+     */
+    public function isRegularAdmin(): bool
     {
         return $this->user_type === 'admin';
     }
@@ -117,6 +133,15 @@ class User extends Authenticatable implements MustVerifyEmailContract
      * Check if user is regular user.
      */
     public function isUser(): bool
+    {
+        return $this->user_type === 'user';
+    }
+
+    /**
+     * Check if user requires email verification.
+     * Only regular users need email verification.
+     */
+    public function requiresEmailVerification(): bool
     {
         return $this->user_type === 'user';
     }

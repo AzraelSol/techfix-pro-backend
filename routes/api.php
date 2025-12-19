@@ -66,12 +66,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
 
     // Incharge routes
-    Route::middleware('user_type:incharge,admin')->group(function () {
+    Route::middleware('user_type:incharge,admin,superadmin')->group(function () {
         Route::put('/bookings/{booking}/status', [BookingController::class, 'updateStatus']);
     });
 
-    // Admin routes
-    Route::middleware('user_type:admin')->group(function () {
+    // Admin routes (includes superadmin)
+    Route::middleware('user_type:admin,superadmin')->group(function () {
         // User management
         Route::get('/users', [UserController::class, 'index']);
         Route::get('/users/statistics', [UserController::class, 'statistics']);

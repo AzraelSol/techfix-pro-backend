@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
@@ -56,6 +57,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+        
+        // Determine allowed user types based on current user's role
+        $allowedTypes = $currentUser->isSuperAdmin() 
+            ? ['user', 'incharge', 'admin', 'superadmin']
+            : ['user', 'incharge', 'admin'];
+
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
@@ -63,9 +72,14 @@ class UserController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['nullable', 'string', 'max:20'],
-            'user_type' => ['required', 'in:user,incharge,admin'],
+            'user_type' => ['required', 'in:' . implode(',', $allowedTypes)],
             'password' => ['required', Password::defaults()],
         ]);
+
+        // Double-check: only superadmin can create superadmin
+        if ($validated['user_type'] === 'superadmin' && !$currentUser->isSuperAdmin()) {
+            return response()->json(['message' => 'Only superadmin can create superadmin users'], 403);
+        }
 
         $user = User::create([
             'first_name' => $validated['first_name'],
@@ -76,6 +90,8 @@ class UserController extends Controller
             'phone' => $validated['phone'] ?? null,
             'user_type' => $validated['user_type'],
             'password' => Hash::make($validated['password']),
+            // Auto-verify email for non-user types
+            'email_verified_at' => $validated['user_type'] !== 'user' ? now() : null,
         ]);
 
         return response()->json([
@@ -99,6 +115,19 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+
+        // Prevent regular admin from modifying superadmin
+        if ($user->isSuperAdmin() && !$currentUser->isSuperAdmin()) {
+            return response()->json(['message' => 'Cannot modify superadmin users'], 403);
+        }
+
+        // Determine allowed user types based on current user's role
+        $allowedTypes = $currentUser->isSuperAdmin() 
+            ? ['user', 'incharge', 'admin', 'superadmin']
+            : ['user', 'incharge', 'admin'];
+
         $validated = $request->validate([
             'first_name' => ['sometimes', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
@@ -106,9 +135,14 @@ class UserController extends Controller
             'username' => ['sometimes', 'string', 'max:255', 'unique:users,username,' . $user->id],
             'email' => ['sometimes', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'phone' => ['nullable', 'string', 'max:20'],
-            'user_type' => ['sometimes', 'in:user,incharge,admin'],
+            'user_type' => ['sometimes', 'in:' . implode(',', $allowedTypes)],
             'password' => ['nullable', Password::defaults()],
         ]);
+
+        // Double-check: only superadmin can set user_type to superadmin
+        if (isset($validated['user_type']) && $validated['user_type'] === 'superadmin' && !$currentUser->isSuperAdmin()) {
+            return response()->json(['message' => 'Only superadmin can assign superadmin role'], 403);
+        }
 
         if (isset($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
@@ -129,9 +163,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+
         // Prevent deleting yourself
-        if (auth()->id() === $user->id) {
+        if ($currentUser->id === $user->id) {
             return response()->json(['message' => 'Cannot delete yourself'], 400);
+        }
+
+        // Prevent regular admin from deleting superadmin
+        if ($user->isSuperAdmin() && !$currentUser->isSuperAdmin()) {
+            return response()->json(['message' => 'Cannot delete superadmin users'], 403);
         }
 
         // Delete profile image if exists
@@ -156,6 +198,7 @@ class UserController extends Controller
             'users' => User::where('user_type', 'user')->count(),
             'incharges' => User::where('user_type', 'incharge')->count(),
             'admins' => User::where('user_type', 'admin')->count(),
+            'superadmins' => User::where('user_type', 'superadmin')->count(),
         ]);
     }
 }

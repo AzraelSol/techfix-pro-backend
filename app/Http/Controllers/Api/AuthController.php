@@ -72,8 +72,8 @@ class AuthController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        // Check if email is verified
-        if (!$user->hasVerifiedEmail()) {
+        // Check if email is verified (only required for regular users)
+        if ($user->requiresEmailVerification() && !$user->hasVerifiedEmail()) {
             // Logout the user since they shouldn't be authenticated
             Auth::logout();
             

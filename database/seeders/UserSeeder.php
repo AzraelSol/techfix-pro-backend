@@ -13,6 +13,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create superadmin user (email verified)
+        User::create([
+            'first_name' => 'Super',
+            'middle_name' => null,
+            'last_name' => 'Admin',
+            'username' => 'superadmin',
+            'email' => 'superadmin@techfixpro.com',
+            'email_verified_at' => now(),
+            'phone' => '09123456780',
+            'user_type' => 'superadmin',
+            'password' => Hash::make('password'),
+        ]);
+
         // Create admin user (email verified)
         User::create([
             'first_name' => 'Admin',
