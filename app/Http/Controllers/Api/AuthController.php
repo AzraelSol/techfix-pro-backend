@@ -296,7 +296,7 @@ class AuthController extends Controller
     public function updateProfileImage(Request $request)
     {
         $request->validate([
-            'profile_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'profile_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ]);
 
         $user = $request->user();

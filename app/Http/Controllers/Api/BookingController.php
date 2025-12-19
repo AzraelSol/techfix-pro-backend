@@ -88,7 +88,7 @@ class BookingController extends Controller
             'issue_description' => ['required', 'string', 'min:10'],
             'priority' => ['sometimes', 'in:low,medium,high,urgent'],
             'images' => ['nullable', 'array'],
-            'images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ]);
 
         $imagesPaths = [];
